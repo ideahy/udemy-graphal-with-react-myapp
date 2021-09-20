@@ -5,7 +5,7 @@ import client from "./client";
 import { SEARCH_REPOSITORIES } from "./graphql";
 
 // useStateの持つ初期値
-const initialVariables = {
+const defaultState = {
   first: 5,
   after: null,
   last: null,
@@ -14,14 +14,29 @@ const initialVariables = {
 };
 
 export const App = (props) => {
-  const [state, setState] = useState(initialVariables);
-
   // もし取得した値が渡ってきたらどうするかがわからない
+  const { first, after, last, before, query } = props;
+  console.log(query);
+  const [state, setState] = useState(defaultState);
   console.log(state);
-  const { propsVariables } = props;
+  //handleChangeをコンストラクタでバインドしろとかいうてるわ。
+
+  const handleChange = (event) => {
+    setState({
+      ...defaultState,
+      query: event.target.value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <ApolloProvider client={client}>
+      <form onSubmit={handleSubmit}>
+        <input value={query} onChange={handleChange}></input>
+      </form>
       <Query query={SEARCH_REPOSITORIES} variables={state}>
         {({ loading, error, data }) => {
           console.log({ data });
