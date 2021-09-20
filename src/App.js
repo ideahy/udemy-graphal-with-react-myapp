@@ -39,11 +39,14 @@ export const App = (props) => {
       </form>
       <Query query={SEARCH_REPOSITORIES} variables={state}>
         {({ loading, error, data }) => {
-          console.log({ data });
           if (loading) return "loading...~_~...";
           if (error) return `Error!!!おらぁ!!! ${error.message}`;
-
-          return <div></div>;
+          const search = data.search;
+          const repositoryCount = search.repositoryCount;
+          const repositoryUnit =
+            repositoryCount === 1 ? "Repository" : "Repositories";
+          const title = `GitHub Repositories Results - ${repositoryCount} ${repositoryUnit}`;
+          return <div>{title}</div>;
         }}
       </Query>
     </ApolloProvider>
