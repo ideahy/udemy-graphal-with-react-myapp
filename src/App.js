@@ -46,7 +46,23 @@ export const App = (props) => {
           const repositoryUnit =
             repositoryCount === 1 ? "Repository" : "Repositories";
           const title = `GitHub Repositories Results - ${repositoryCount} ${repositoryUnit}`;
-          return <div>{title}</div>;
+          return (
+            <>
+              <div>{title}</div>
+              <ul>
+                {search.edges.map((edge) => {
+                  const node = edge.node;
+                  return (
+                    <li key={node.id}>
+                      <a href={node.url} target="_blank">
+                        {node.name}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          );
         }}
       </Query>
     </ApolloProvider>
